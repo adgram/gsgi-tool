@@ -1,0 +1,35 @@
+@import './reset.css';
+@import './layout.css';
+@import './toolbar.css';
+@import './panels.css';
+@import './command-bar.css';
+@import './status-bar.css';
+@import './dialogs.css';
+
+:root {
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #252526;
+  --bg-input: #3c3c3c;
+  --bg-hover: #2a2d2e;
+  --bg-active: #094771;
+  --bg-status-bar: #3c5a78;
+  --text-primary: #d4d4d4;
+  --text-secondary: #ccc;
+  --text-muted: #888;
+  --text-dim: #999;
+  --text-brand: #4fc3f7;
+  --border-primary: #555;
+  --border-secondary: #444;
+  --border-tertiary: #333;
+  --border-hover: #3a3a3a;
+  --accent-blue: #0078d7;
+  --accent-cyan: #4fc3f7;
+  --accent-red: #e06c75;
+  --accent-green: #4ec9b0;
+  --drop-overlay: #09f;
+  --scrollbar-thumb: #555;
+  --shadow: rgba(0,0,0,0.4);
+  --shadow-heavy: rgba(0,0,0,0.5);
+  --shadow-dialog: rgba(0,0,0,0.6);
+}

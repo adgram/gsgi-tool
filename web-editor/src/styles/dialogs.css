@@ -1,0 +1,141 @@
+/* ─── Context menu ─────────────────────── */
+#ctx-menu {
+  display: none;
+  position: fixed;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px var(--shadow);
+  padding: 4px 0;
+  z-index: 1000;
+  min-width: 140px;
+  font-size: 12px;
+}
+#ctx-menu.visible { display: block; }
+#ctx-menu .ctx-item {
+  padding: 5px 14px;
+  cursor: pointer;
+  user-select: none;
+  color: #e0e0e0;
+  font-size: 12px;
+}
+#ctx-menu .ctx-item:hover {
+  background: var(--bg-active);
+  color: #fff;
+}
+#ctx-menu .ctx-sep {
+  height: 1px;
+  background: var(--border-secondary);
+  margin: 4px 8px;
+}
+
+#layer-context-menu {
+  display: none;
+  position: fixed;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
+  padding: 4px 0;
+  min-width: 140px;
+  z-index: 1000;
+  box-shadow: 2px 2px 8px var(--shadow-heavy);
+  font-size: 12px;
+}
+#layer-context-menu.visible { display: block; }
+#layer-context-menu .ctx-item {
+  padding: 4px 12px;
+  cursor: pointer;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#layer-context-menu .ctx-item:hover {
+  background: var(--bg-active);
+  color: #fff;
+}
+
+/* ─── Toast notification ────────────────── */
+#gsgi-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  padding: 10px 20px;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px var(--shadow);
+  font-size: 14px;
+  z-index: 10000;
+}
+
+/* ─── 模态对话框 ─────────────────────── */
+#gsgi-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.gsgi-modal-box {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 20px 24px;
+  min-width: 300px;
+  max-width: 400px;
+  box-shadow: 0 8px 32px var(--shadow-heavy);
+}
+.gsgi-modal-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+}
+.gsgi-modal-message {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 14px;
+}
+.gsgi-modal-input {
+  width: 100%;
+  padding: 6px 8px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
+  font-size: 12px;
+  outline: none;
+  box-sizing: border-box;
+  margin-bottom: 14px;
+}
+.gsgi-modal-input:focus { border-color: var(--accent-green); }
+.gsgi-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+.gsgi-modal-btn-cancel {
+  padding: 6px 16px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.gsgi-modal-btn-cancel:hover { background: #4a4a4a; }
+.gsgi-modal-btn-confirm {
+  padding: 6px 16px;
+  background: #0e639c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.gsgi-modal-btn-confirm:hover { background: #1177bb; }

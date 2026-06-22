@@ -1,0 +1,438 @@
+{
+  "gsgi": "1.0",
+  "tags": [],
+  "summary": "所有实体类型演示 — 依次排列",
+  "author": "",
+  "created": "",
+  "modified": "",
+  "properties": {
+    "scale": 1,
+    "unit": "mm",
+    "currentLayer": "0"
+  },
+  "layers": [
+    {
+      "id": "0",
+      "color": 7,
+      "visible": true
+    }
+  ],
+  "text_styles": [],
+  "linetypes": [],
+  "blocks": [],
+  "entities": [
+    {
+      "id": "P1",
+      "type": "point",
+      "description": "点(十字)",
+      "point": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "P2",
+      "type": "point",
+      "visible": true,
+      "description": "构造点(菱形)",
+      "point": [
+        150,
+        0
+      ],
+      "construction": true
+    },
+    {
+      "id": "P3a",
+      "type": "point",
+      "point": [
+        290,
+        -25
+      ]
+    },
+    {
+      "id": "P3b",
+      "type": "point",
+      "point": [
+        290,
+        25
+      ]
+    },
+    {
+      "id": "L1",
+      "type": "line",
+      "description": "直线",
+      "start_ref": "P3a",
+      "end_ref": "P3b"
+    },
+    {
+      "id": "P4",
+      "type": "point",
+      "point": [
+        440,
+        0
+      ]
+    },
+    {
+      "id": "C1",
+      "type": "circle",
+      "description": "圆",
+      "center_ref": "P4",
+      "r": 25
+    },
+    {
+      "id": "P5a",
+      "type": "point",
+      "point": [
+        585,
+        -25
+      ]
+    },
+    {
+      "id": "P5b",
+      "type": "point",
+      "point": [
+        595,
+        0
+      ]
+    },
+    {
+      "id": "P5c",
+      "type": "point",
+      "point": [
+        585,
+        25
+      ]
+    },
+    {
+      "id": "A1",
+      "type": "arc",
+      "description": "圆弧",
+      "start_ref": "P5a",
+      "mid_ref": "P5b",
+      "end_ref": "P5c"
+    },
+    {
+      "id": "P6a",
+      "type": "point",
+      "point": [
+        725,
+        -25
+      ]
+    },
+    {
+      "id": "P6b",
+      "type": "point",
+      "point": [
+        775,
+        25
+      ]
+    },
+    {
+      "id": "R1",
+      "type": "rectangle",
+      "description": "矩形",
+      "min_ref": "P6a",
+      "max_ref": "P6b"
+    },
+    {
+      "id": "PL1",
+      "type": "polyline",
+      "description": "多段线",
+      "points": [
+        [
+          880,
+          -25
+        ],
+        [
+          880,
+          25
+        ],
+        [
+          930,
+          -25
+        ],
+        [
+          880,
+          -25
+        ]
+      ],
+      "closed": true
+    },
+    {
+      "id": "P8",
+      "type": "point",
+      "point": [
+        1070,
+        -5
+      ]
+    },
+    {
+      "id": "T1",
+      "type": "text",
+      "description": "文字",
+      "position_ref": "P8",
+      "text": "文本ABC",
+      "height": 8
+    },
+    {
+      "id": "P9a",
+      "type": "point",
+      "point": [
+        1220,
+        -30
+      ]
+    },
+    {
+      "id": "P9b",
+      "type": "point",
+      "point": [
+        1230,
+        0
+      ]
+    },
+    {
+      "id": "P9c",
+      "type": "point",
+      "point": [
+        1220,
+        30
+      ]
+    },
+    {
+      "id": "SF1",
+      "type": "spline_fit",
+      "description": "样条曲线",
+      "fit_point_refs": [
+        "P9a",
+        "P9b",
+        "P9c"
+      ]
+    },
+    {
+      "id": "P10",
+      "type": "point",
+      "point": [
+        1380,
+        0
+      ]
+    },
+    {
+      "id": "CS1",
+      "type": "coord_sys",
+      "description": "坐标系",
+      "origin_ref": "P10"
+    },
+    {
+      "id": "P11a",
+      "type": "point",
+      "point": [
+        1530,
+        -20
+      ]
+    },
+    {
+      "id": "P11b",
+      "type": "point",
+      "point": [
+        1580,
+        -20
+      ]
+    },
+    {
+      "id": "D1",
+      "type": "dimension",
+      "description": "标注",
+      "p1_ref": "P11a",
+      "p2_ref": "P11b",
+      "measurement": 50,
+      "dim_line_offset": 15
+    },
+    {
+      "id": "PP1",
+      "type": "param_pt",
+      "description": "参数点(小圆)",
+      "curve_ref": "L1",
+      "t": 0.5,
+      "point": [
+        290,
+        0
+      ],
+      "label": "t=0.5"
+    },
+    {
+      "id": "P12a",
+      "type": "point",
+      "point": [
+        1680,
+        -25
+      ]
+    },
+    {
+      "id": "P12b",
+      "type": "point",
+      "point": [
+        1720,
+        -25
+      ]
+    },
+    {
+      "id": "P12c",
+      "type": "point",
+      "point": [
+        1720,
+        25
+      ]
+    },
+    {
+      "id": "P12d",
+      "type": "point",
+      "point": [
+        1680,
+        25
+      ]
+    },
+    {
+      "id": "SC1",
+      "type": "spline_cv",
+      "description": "控制点样条",
+      "control_point_refs": [
+        "P12a",
+        "P12b",
+        "P12c",
+        "P12d"
+      ]
+    },
+    {
+      "id": "P13a",
+      "type": "point",
+      "point": [
+        1860,
+        -30
+      ]
+    },
+    {
+      "id": "P13b",
+      "type": "point",
+      "point": [
+        1860,
+        30
+      ]
+    },
+    {
+      "id": "P13c",
+      "type": "point",
+      "point": [
+        1920,
+        30
+      ]
+    },
+    {
+      "id": "P13d",
+      "type": "point",
+      "point": [
+        1920,
+        -30
+      ]
+    },
+    {
+      "id": "PL2",
+      "type": "polyarc",
+      "description": "多边形弧",
+      "point_refs": [
+        "P13a",
+        "P13b",
+        "P13c",
+        "P13d"
+      ],
+      "bulges": [
+        0,
+        0.5,
+        0,
+        0.5
+      ],
+      "closed": true
+    },
+    {
+      "id": "P14a",
+      "type": "point",
+      "point": [
+        2070,
+        -25
+      ]
+    },
+    {
+      "id": "P14b",
+      "type": "point",
+      "point": [
+        2120,
+        -25
+      ]
+    },
+    {
+      "id": "P14c",
+      "type": "point",
+      "point": [
+        2120,
+        25
+      ]
+    },
+    {
+      "id": "P14d",
+      "type": "point",
+      "point": [
+        2070,
+        25
+      ]
+    },
+    {
+      "id": "PC1",
+      "type": "polycurve",
+      "description": "复合曲线",
+      "segments": [
+        {
+          "type": "line",
+          "start_ref": "P14a",
+          "end_ref": "P14b"
+        },
+        {
+          "type": "line",
+          "start_ref": "P14b",
+          "end_ref": "P14c"
+        },
+        {
+          "type": "line",
+          "start_ref": "P14c",
+          "end_ref": "P14d"
+        },
+        {
+          "type": "line",
+          "start_ref": "P14d",
+          "end_ref": "P14a"
+        }
+      ],
+      "closed": true
+    },
+    {
+      "id": "SS1",
+      "type": "subsegment",
+      "description": "子线段(紫色)",
+      "curve_ref": "L1",
+      "from_t": 0.2,
+      "to_t": 0.8,
+      "label": "子段"
+    },
+    {
+      "id": "RA1",
+      "type": "region_anno",
+      "description": "区域标注",
+      "edges_refs": [
+        "PC1"
+      ],
+      "area": 2500,
+      "area_text": "A=2500",
+      "fill": 7
+    }
+  ],
+  "groups": [],
+  "descriptions": []
+}

@@ -1,0 +1,614 @@
+{
+  "gsgi": "1.0",
+  "summary": "停车场局部平面图示例",
+  "author": "",
+  "created": "",
+  "modified": "",
+  "properties": {
+    "unit": "mm",
+    "scale": 1,
+    "coord_precision": 3,
+    "currentLayer": "0"
+  },
+  "layers": [
+    {
+      "id": "0",
+      "color": 7,
+      "visible": true,
+      "frozen": false,
+      "locked": false,
+      "linetype": "Continuous",
+      "printable": true
+    },
+    {
+      "id": "轴线",
+      "color": 1
+    }
+  ],
+  "text_styles": [],
+  "linetypes": [],
+  "blocks": [
+    {
+      "id": "parking",
+      "name": "标准停车位",
+      "base_point": [
+        0,
+        0
+      ],
+      "entities": [
+        {
+          "id": "pk_min",
+          "type": "point",
+          "point": [
+            -1250,
+            -2500
+          ]
+        },
+        {
+          "id": "pk_max",
+          "type": "point",
+          "point": [
+            1250,
+            2500
+          ]
+        },
+        {
+          "id": "pk_rect",
+          "type": "rectangle",
+          "min_ref": "pk_min",
+          "max_ref": "pk_max"
+        },
+        {
+          "id": "pk_pos",
+          "type": "point",
+          "point": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": "pk_label",
+          "type": "text",
+          "position_ref": "pk_pos",
+          "text": "P",
+          "height": 500
+        }
+      ],
+      "descriptions": [
+        {
+          "target": "pk_rect",
+          "property": null,
+          "text": "停车位轮廓，宽度2500mm，长度5000mm"
+        }
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "id": "E1",
+      "type": "polyline",
+      "description": "车位1 轮廓（2500×5000mm）",
+      "points": [
+        [
+          433.4198013868282,
+          676.5577387501709
+        ],
+        [
+          0,
+          5000
+        ],
+        [
+          2500,
+          5000
+        ],
+        [
+          2500,
+          0
+        ]
+      ],
+      "closed": true
+    },
+    {
+      "id": "E2",
+      "type": "polyline",
+      "description": "车位2 轮廓（2500×5000mm）",
+      "points": [
+        [
+          2530,
+          0
+        ],
+        [
+          2530,
+          5000
+        ],
+        [
+          5030,
+          5000
+        ],
+        [
+          5030,
+          0
+        ]
+      ],
+      "closed": true
+    },
+    {
+      "id": "P3",
+      "type": "point",
+      "point": [
+        1250,
+        2500
+      ]
+    },
+    {
+      "id": "E1_label",
+      "type": "text",
+      "position_ref": "P3",
+      "text": "P",
+      "height": 500
+    },
+    {
+      "id": "P4",
+      "type": "point",
+      "point": [
+        3780,
+        2500
+      ]
+    },
+    {
+      "id": "E2_label",
+      "type": "text",
+      "position_ref": "P4",
+      "text": "P",
+      "height": 500
+    },
+    {
+      "id": "P5",
+      "type": "point",
+      "point": [
+        2515,
+        -1000
+      ]
+    },
+    {
+      "id": "P6",
+      "type": "point",
+      "point": [
+        2515,
+        6000
+      ]
+    },
+    {
+      "id": "PC1",
+      "type": "point",
+      "point": [
+        2000,
+        -1500
+      ],
+      "point_role": "construction"
+    },
+    {
+      "id": "PC2",
+      "type": "point",
+      "point": [
+        3000,
+        -1500
+      ],
+      "point_role": "helper"
+    },
+    {
+      "id": "PC3",
+      "type": "point",
+      "point": [
+        2500,
+        -1500
+      ],
+      "construction": true
+    },
+    {
+      "id": "L_construction_test",
+      "type": "line",
+      "layer": "轴线",
+      "color": 1,
+      "description": "构造点测试线",
+      "start_ref": "PC1",
+      "end_ref": "PC2"
+    },
+    {
+      "id": "E_axis",
+      "type": "line",
+      "layer": "轴线",
+      "color": 1,
+      "description": "车位分隔轴线",
+      "start_ref": "P5",
+      "end_ref": "P6"
+    },
+    {
+      "id": "PP1",
+      "type": "param_pt",
+      "curve_ref": "E1",
+      "t": 2.5,
+      "point": [
+        2500,
+        2500
+      ],
+      "label": "车位1右边中点"
+    },
+    {
+      "id": "PP2",
+      "type": "param_pt",
+      "curve_ref": "E2",
+      "t": 0.5,
+      "point": [
+        2530,
+        2500
+      ],
+      "label": "车位2左边中点"
+    },
+    {
+      "id": "P1",
+      "type": "point",
+      "point": [
+        2500,
+        2500
+      ],
+      "ref_pt": "PP1"
+    },
+    {
+      "id": "P2",
+      "type": "point",
+      "point": [
+        2530,
+        2500
+      ],
+      "ref_pt": "PP2"
+    },
+    {
+      "id": "D1",
+      "type": "dimension",
+      "description": "车位1右边到车位2左边的净间距",
+      "p1_ref": "P1",
+      "p2_ref": "P2",
+      "measurement": 30,
+      "category": "horizontal"
+    },
+    {
+      "id": "R1",
+      "type": "position",
+      "description": "车位1长边到车位2长边距离必须≥30mm",
+      "kind": "constraint",
+      "ref_a": "P1",
+      "ref_b": "P2",
+      "value": 30,
+      "operator": ">="
+    },
+    {
+      "id": "C1",
+      "type": "circle",
+      "layer": "轴线",
+      "color": 3,
+      "center_ref": "P4",
+      "r": 300
+    },
+    {
+      "id": "A1",
+      "type": "arc",
+      "color": 5,
+      "center_ref": "P3",
+      "r": 400,
+      "end_angle": 3.141592653589793
+    },
+    {
+      "id": "PA_P1",
+      "type": "point",
+      "point": [
+        5500,
+        0
+      ]
+    },
+    {
+      "id": "PA_P2",
+      "type": "point",
+      "point": [
+        5500,
+        1500
+      ]
+    },
+    {
+      "id": "PA_P3",
+      "type": "point",
+      "point": [
+        7000,
+        1500
+      ]
+    },
+    {
+      "id": "PA_P4",
+      "type": "point",
+      "point": [
+        7000,
+        0
+      ]
+    },
+    {
+      "id": "PA1",
+      "type": "polyarc",
+      "color": 4,
+      "description": "多段弧线（直线+弧+直线）",
+      "point_refs": [
+        "PA_P1",
+        "PA_P2",
+        "PA_P3",
+        "PA_P4"
+      ],
+      "bulges": [
+        0,
+        0.5,
+        0
+      ]
+    },
+    {
+      "id": "SF1",
+      "type": "point",
+      "point": [
+        5500,
+        2500
+      ]
+    },
+    {
+      "id": "SF2",
+      "type": "point",
+      "point": [
+        6000,
+        3500
+      ]
+    },
+    {
+      "id": "SF3",
+      "type": "point",
+      "point": [
+        6500,
+        2500
+      ]
+    },
+    {
+      "id": "SF4",
+      "type": "point",
+      "point": [
+        7000,
+        3500
+      ]
+    },
+    {
+      "id": "SF5",
+      "type": "point",
+      "point": [
+        7500,
+        2500
+      ]
+    },
+    {
+      "id": "S1",
+      "type": "spline_fit",
+      "color": 2,
+      "description": "拟合样条曲线",
+      "fit_point_refs": [
+        "SF1",
+        "SF2",
+        "SF3",
+        "SF4",
+        "SF5"
+      ]
+    },
+    {
+      "id": "BR1",
+      "type": "block_ref",
+      "description": "停车位块参照",
+      "block_id": "parking",
+      "position_ref": "SF3"
+    },
+    {
+      "id": "ML_P1",
+      "type": "point",
+      "point": [
+        5500,
+        4500
+      ]
+    },
+    {
+      "id": "ML_P2",
+      "type": "point",
+      "point": [
+        5500,
+        5500
+      ]
+    },
+    {
+      "id": "ML_P3",
+      "type": "point",
+      "point": [
+        7000,
+        5500
+      ]
+    },
+    {
+      "id": "ML1",
+      "type": "mline",
+      "color": 5,
+      "description": "多线（3条平行线）",
+      "point_refs": [
+        "ML_P1",
+        "ML_P2",
+        "ML_P3"
+      ],
+      "elements": [
+        {
+          "offset": -100,
+          "color": 5
+        },
+        {
+          "offset": 0,
+          "color": 3
+        },
+        {
+          "offset": 100,
+          "color": 5
+        }
+      ]
+    },
+    {
+      "id": "CS_P1",
+      "type": "point",
+      "point": [
+        7500,
+        500
+      ]
+    },
+    {
+      "id": "CS1",
+      "type": "coord_sys",
+      "description": "坐标系指示器",
+      "origin_ref": "CS_P1"
+    },
+    {
+      "id": "MT1",
+      "type": "mtext",
+      "color": 6,
+      "description": "多行文字",
+      "position_ref": "CS_P1",
+      "width": 800,
+      "text": "示例多行文字\n第2行\n第3行",
+      "height": 200
+    },
+    {
+      "id": "T1",
+      "type": "table",
+      "color": 7,
+      "description": "表格",
+      "position_ref": "ML_P1",
+      "markdown": "|名称|长度|备注|\n|---|---|---|\n|车位1|2500|标准|\n|车位2|2500|标准|",
+      "col_widths": [
+        500,
+        400,
+        400
+      ],
+      "row_heights": [
+        300,
+        250,
+        250
+      ]
+    },
+    {
+      "id": "X1",
+      "type": "xref",
+      "color": 6,
+      "description": "外部参照占位符",
+      "file_path": "基础图纸.dwg",
+      "position_ref": "CS_P1"
+    },
+    {
+      "id": "P1781612605826",
+      "type": "point",
+      "description": "起点 -1000.0,600.0",
+      "point": [
+        -1000,
+        600
+      ]
+    },
+    {
+      "id": "P1781612605827",
+      "type": "point",
+      "description": "终点 500.0,-700.0",
+      "point": [
+        500,
+        -700
+      ]
+    },
+    {
+      "id": "L1781612605825",
+      "type": "line",
+      "description": "直线",
+      "start_ref": "P1781612605826",
+      "end_ref": "P1781612605827"
+    },
+    {
+      "id": "P1781612799153",
+      "type": "point",
+      "description": "起点 -2600.0,700.0",
+      "point": [
+        -2600,
+        700
+      ]
+    },
+    {
+      "id": "P1781612799154",
+      "type": "point",
+      "description": "终点 -1600.0,-900.0",
+      "point": [
+        -1600,
+        -900
+      ]
+    },
+    {
+      "id": "L1781612799152",
+      "type": "line",
+      "description": "直线",
+      "start_ref": "P1781612799153",
+      "end_ref": "P1781612799154"
+    },
+    {
+      "id": "P1781612855957",
+      "type": "point",
+      "description": "起点 -3100.0,400.0",
+      "point": [
+        -3100,
+        400
+      ]
+    },
+    {
+      "id": "P1781612855958",
+      "type": "point",
+      "description": "终点 -1400.0,2400.0",
+      "point": [
+        -1400,
+        2400
+      ]
+    },
+    {
+      "id": "L1781612855956",
+      "type": "line",
+      "description": "直线",
+      "start_ref": "P1781612855957",
+      "end_ref": "P1781612855958"
+    },
+    {
+      "id": "P1781612869552",
+      "type": "point",
+      "description": "圆心 (-3300.0,-300.0)",
+      "point": [
+        -3300,
+        -300
+      ]
+    },
+    {
+      "id": "C1781612869551",
+      "type": "circle",
+      "description": "圆 r=1140.2",
+      "center_ref": "P1781612869552",
+      "r": 1140.175425099138
+    }
+  ],
+  "groups": [],
+  "descriptions": [
+    {
+      "target": "E1",
+      "property": null,
+      "text": "左侧标准车位（2500×5000mm）"
+    },
+    {
+      "target": "E2",
+      "property": null,
+      "text": "右侧标准车位（2500×5000mm）"
+    }
+  ]
+}

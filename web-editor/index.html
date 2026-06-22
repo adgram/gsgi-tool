@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSGI Viewer — 通用简易几何信息模型查看器</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>📐</text></svg>">
+<link rel="stylesheet" href="src/styles/index.css">
+</head>
+<body>
+<div id="app">
+  <div id="toolbar">
+    <span class="brand">GSGI</span>
+    <div class="sep"></div>
+    <button id="btn-new" title="新建文档">📄 新建</button>
+    <button id="btn-open" title="打开文件">📂 打开</button>
+    <button id="btn-save" title="保存">💾 保存</button>
+    <button id="btn-saveas" title="另存为">📋 另存为</button>
+    <div class="sep"></div>
+    <div class="dropdown">
+      <button class="dropdown-toggle">编辑 ▾</button>
+      <div class="dropdown-menu">
+        <button id="btn-undo" title="撤销 (Ctrl+Z)">↩ 撤销</button>
+        <button id="btn-redo" title="重做 (Ctrl+Shift+Z)">↪ 重做</button>
+      </div>
+    </div>
+    <div class="sep"></div>
+    <div class="dropdown">
+      <button class="dropdown-toggle">视图 ▾</button>
+      <div class="dropdown-menu">
+        <button id="btn-zoom-ext" title="缩放到全部">⊞ 全图</button>
+        <button id="btn-zoom-in">⊕ 放大</button>
+        <button id="btn-zoom-out">⊖ 缩小</button>
+      </div>
+    </div>
+    <div class="sep"></div>
+  </div>
+  <div id="tab-bar"></div>
+
+  <div id="main">
+    <div id="draw-toolbar">
+      <button class="draw-btn active" data-tool="select" title="选择 (Esc)"><img src="assets/icons/select.svg" alt="选择"></button>
+      <button class="draw-btn" data-tool="move" title="移动"><img src="assets/icons/move.svg" alt="移动"></button>
+      <button class="draw-btn" data-tool="copy" title="复制"><img src="assets/icons/copy.svg" alt="复制"></button>
+      <button class="draw-btn" data-tool="rotate" title="旋转"><img src="assets/icons/rotate.svg" alt="旋转"></button>
+      <button class="draw-btn" data-tool="mirror" title="镜像"><img src="assets/icons/mirror.svg" alt="镜像"></button>
+      <button class="draw-btn" data-tool="erase" title="擦除"><img src="assets/icons/erase.svg" alt="擦除"></button>
+      <button class="draw-btn" data-tool="point" title="点"><img src="assets/icons/point.svg" alt="点"></button>
+      <button class="draw-btn" data-tool="line" title="直线"><img src="assets/icons/line.svg" alt="直线"></button>
+      <button class="draw-btn" data-tool="rectangle" title="矩形"><img src="assets/icons/rectangle.svg" alt="矩形"></button>
+      <button class="draw-btn" data-tool="polyline" title="多段线"><img src="assets/icons/polyline.svg" alt="多段线"></button>
+      <button class="draw-btn" data-tool="polyarc" title="圆弧多段线"><img src="assets/icons/polyarc.svg" alt="圆弧多段线"></button>
+      <button class="draw-btn" data-tool="polycurve" title="复合多段线"><img src="assets/icons/polycurve.svg" alt="复合多段线"></button>
+      <button class="draw-btn" data-tool="circle" title="圆"><img src="assets/icons/circle.svg" alt="圆"></button>
+      <button class="draw-btn" data-tool="arc" title="弧"><img src="assets/icons/arc.svg" alt="弧"></button>
+      <button class="draw-btn" data-tool="spline_fit" title="拟合点曲线"><img src="assets/icons/spline_fit.svg" alt="拟合点曲线"></button>
+      <button class="draw-btn" data-tool="spline_cv" title="控制点曲线"><img src="assets/icons/spline_cv.svg" alt="控制点曲线"></button>
+      <button class="draw-btn" data-tool="text" title="文字"><img src="assets/icons/text.svg" alt="文字"></button>
+      <button class="draw-btn" data-tool="coord_sys" title="自由坐标系"><img src="assets/icons/coord_sys.svg" alt="自由坐标系"></button>
+      <button class="draw-btn" data-tool="block_ref" title="参照块"><img src="assets/icons/block_ref.svg" alt="参照块"></button>
+      <button class="draw-btn" data-tool="xref" title="外部参照"><img src="assets/icons/xref.svg" alt="外部参照"></button>
+      <button class="draw-btn" data-tool="dimension" title="尺寸标注"><img src="assets/icons/dimension.svg" alt="尺寸标注"></button>
+      <button class="draw-btn" data-tool="region_anno" title="区域标注"><img src="assets/icons/region_anno.svg" alt="区域标注"></button>
+      <button class="draw-btn" data-tool="subsegment" title="子线断"><img src="assets/icons/subsegment.svg" alt="子线断"></button>
+      <button class="draw-btn" data-tool="table" title="表格"><img src="assets/icons/table.svg" alt="表格"></button>
+      <button class="draw-btn" data-tool="position" title="位置关系"><img src="assets/icons/position.svg" alt="位置关系"></button>
+    </div>
+    <div id="canvas-container">
+      <canvas id="canvas" resize></canvas>
+      <div id="drop-overlay">拖放 .gsgi 文件到此处</div>
+    </div>
+
+    <div id="panels">
+      <div id="panels-resize-handle"></div>
+      <div class="panel">
+        <div class="panel-header">
+          <span id="info-panel-title">图层</span>
+          <span id="layer-count">0</span>
+          <button id="btn-new-layer" style="display:none">+ 新建</button>
+          <button id="btn-back-layers" style="display:none">转到图层面板</button>
+        </div>
+        <div class="panel-body" id="info-panel-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="cmd-bar">
+    <input id="cmd-input" type="text" placeholder="输入命令或数值..." autocomplete="off" spellcheck="false">
+    <span id="cmd-prompt">就绪</span>
+  </div>
+
+  <div id="info-bar">
+    <span id="info-entities">实体: 0</span>
+    <span id="info-blocks">块: 0</span>
+    <span id="info-layers">图层: 0</span>
+    <span id="info-pos">坐标: —</span>
+    <span id="info-snap">
+      <button id="btn-osnap" class="stat-btn" title="对象捕捉 (端点/中点)">◎</button>
+      <button id="btn-nearest" class="stat-btn" title="最近点捕捉">⊕</button>
+      <button id="btn-snap" class="stat-btn active" title="栅格捕捉 (F9)">▦</button>
+      <button id="btn-grid" class="stat-btn" title="栅格显示 (F7)">⊞</button>
+    </span>
+    <span id="info-scale">
+      <span id="scale-label">比例</span>
+      <select id="scale-select">
+        <option value="100">1:100</option>
+        <option value="50">1:50</option>
+        <option value="20">1:20</option>
+        <option value="10">1:10</option>
+        <option value="5">1:5</option>
+        <option value="2">1:2</option>
+        <option value="1" selected>1:1</option>
+        <option value="0.5">2:1</option>
+        <option value="0.2">5:1</option>
+        <option value="0.1">10:1</option>
+        <option value="0.05">20:1</option>
+        <option value="custom">自定义...</option>
+      </select>
+      <input id="scale-custom" type="number" step="0.01" min="0.01" placeholder="比例值">
+    </span>
+  </div>
+</div>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

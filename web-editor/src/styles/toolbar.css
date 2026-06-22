@@ -1,0 +1,121 @@
+/* ─── Draw toolbar (vertical, left) ──── */
+#draw-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 2px;
+  width: 78px;
+  padding: 6px;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-secondary);
+  flex-shrink: 0;
+  user-select: none;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+#draw-toolbar button {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 30px;
+  text-align: center;
+  transition: all .12s;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#draw-toolbar button:hover { background: var(--border-hover); border-color: var(--border-primary); color: #eee; }
+#draw-toolbar button:active { background: #505050; }
+#draw-toolbar button.draw-btn.active {
+  background: var(--bg-active);
+  border-color: var(--accent-blue);
+  color: #fff;
+}
+#draw-toolbar button img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 4px auto 0;
+  pointer-events: none;
+  filter: brightness(0.8);
+}
+#draw-toolbar button.draw-btn.active img {
+  filter: brightness(1);
+}
+
+/* ─── Toolbar (horizontal, top) ─────────── */
+#toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 36px;
+  padding: 0 8px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-secondary);
+  flex-shrink: 0;
+  user-select: none;
+}
+#toolbar .brand {
+  font-weight: 700;
+  color: var(--text-brand);
+  font-size: 13px;
+  margin-right: 4px;
+  letter-spacing: 1px;
+}
+#toolbar .sep {
+  width: 1px;
+  height: 22px;
+  background: var(--border-secondary);
+  margin: 0 6px;
+}
+#toolbar button {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  padding: 3px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: all .12s;
+}
+#toolbar button:hover { background: var(--border-hover); border-color: var(--border-primary); color: #eee; }
+#toolbar button:active { background: #505050; }
+#toolbar .dropdown { position: relative; display: inline-flex; }
+#toolbar .dropdown-toggle { padding: 3px 12px; }
+#toolbar .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 120px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
+  padding: 4px 0;
+  z-index: 200;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+#toolbar .dropdown-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 5px 14px;
+  border: none;
+  border-radius: 0;
+  white-space: nowrap;
+}
+#toolbar .dropdown-menu button:hover { background: var(--bg-active); }
+#toolbar .dropdown:hover .dropdown-menu { display: block; }
+#toolbar button.draw-btn.active {
+  background: var(--bg-active);
+  border-color: var(--accent-blue);
+  color: #fff;
+}
