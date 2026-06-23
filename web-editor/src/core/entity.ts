@@ -6,8 +6,34 @@
  * 子类通过重写 render / getBox / getGripPoints 等方法实现具体表现。
  */
 
-import { Box, Point2d } from './geometry';
+import { Box, Point2d, intersectCurves, Curve } from './geometry';
 import { Transform } from './transform';
+
+/** ref_pt object 形式的类型定义 */
+export interface RefPtRef {
+  id: string;
+  represent?: string;
+  ref_op?: string;
+}
+
+/** 从 string 或 object 形式的引用中提取实体 id */
+export function refId(value: unknown): string | null {
+  if (!value) return null;
+  if (typeof value === 'string') return value;
+  if (typeof value === 'object' && 'id' in (value as any) && typeof (value as any).id === 'string') return (value as any).id;
+  return null;
+}
+
+/** 当被引用实体是 point/param_pt 时，强制 represent='self'、ref_op='offset' */
+export function sanitizeRefPtOverrides(entityType: string, represent?: string | Record<string, unknown>, ref_op?: string): { represent?: string | Record<string, unknown>; ref_op?: string } {
+  if (entityType === 'point' || entityType === 'param_pt') {
+    return {
+      represent: represent === 'self' ? represent : undefined,
+      ref_op: ref_op === 'offset' ? ref_op : undefined
+    };
+  }
+  return { represent, ref_op };
+}
 
 /** 实体引用解析器的最小接口 */
 export interface IResolver {
@@ -102,7 +128,7 @@ export class Entity {
   points?: number[][] | Point2d[];
   /** 子类扩展属性：点实体的坐标（PointEntity 存储为 Point2d，raw 时可能为 number[]） */
   point?: number[] | Point2d | null;
-  ref_pt?: string | null;
+  ref_pt?: string | RefPtRef | null;
   /** 子类扩展属性：polycurve/polyarc 的线段描述 */
   segments?: Array<{ start_ref?: string; end_ref?: string; mid_ref?: string; center_ref?: string; [key: string]: unknown }>;
   // 更新状态，临时数据
@@ -156,9 +182,92 @@ export class Entity {
     return null;
   }
 
-  getRepresent(resolver: IResolver | undefined): Point2d{ return new Point2d(0, 0); }
+  /** 解析 represent 字段规则，返回代表点；不支持的规则返回 null */
+  /** 可选接受外部 represent object，用于 ref_pt 覆盖解析 */
+  _resolveRepresentByRule(resolver: IResolver | undefined, repOverride?: Record<string, unknown>): Point2d | null {
+    const rep = repOverride ?? this.represent;
+    if (!rep) return null;
+    if (typeof rep === 'string') return null;
+    const repObj = rep as Record<string, unknown>;
+    if (repObj.method === 'intersect' && typeof repObj.curve_ref === 'string') {
+      const thisCurve = this.getCurve(resolver);
+      const otherEntity = resolver?.get(repObj.curve_ref);
+      const otherCurve = otherEntity?.getCurve?.(resolver);
+      if (thisCurve && otherCurve && 'type' in thisCurve && 'type' in otherCurve) {
+        const intersections = intersectCurves(thisCurve as Curve, otherCurve as Curve);
+        if (intersections.length > 0) return intersections[0].point;
+      }
+    }
+    if (repObj.method === 'param' && typeof repObj.t === 'number') {
+      const curve = this.getCurve(resolver);
+      if (curve && typeof curve.eval === 'function') {
+        const pt = curve.eval(repObj.t);
+        if (pt) return pt;
+      }
+      return new Point2d(0, 0);
+    }
+    if (repObj.method === 'bbox') {
+      const box = this.getBox(resolver);
+      if (box) {
+        if (repObj.which === 'min') return box.min;
+        if (repObj.which === 'max') return box.max;
+      }
+      return new Point2d(0, 0);
+    }
+    return null;
+  }
 
-  getRefPoint(resolver: IResolver | undefined, pt: Point2d): Point2d{ return this.getRepresent(resolver).add(pt); }
+  getRepresent(resolver: IResolver | undefined): Point2d {
+    const byRule = this._resolveRepresentByRule(resolver);
+    if (byRule) return byRule;
+    return new Point2d(0, 0);
+  }
+
+  getRefPoint(resolver: IResolver | undefined, pt: Point2d): Point2d { return this.getRepresent(resolver).add(pt); }
+
+  /** 支持代表点和组合运算覆盖的引用点解析（representOverride 可为 string 或 object method） */
+  resolveRefPt(resolver: IResolver | undefined, offset: Point2d, representOverride?: string | Record<string, unknown>, refOpOverride?: string): Point2d {
+    let repPt: Point2d;
+    if (representOverride) {
+      if (typeof representOverride === 'object') {
+        const byRule = this._resolveRepresentByRule(resolver, representOverride);
+        repPt = byRule ?? new Point2d(0, 0);
+      } else {
+        repPt = this._resolveRepresentKeyword(representOverride, resolver);
+      }
+    } else {
+      repPt = this.getRepresent(resolver);
+    }
+    if (refOpOverride === 'link') return repPt;
+    if (refOpOverride === 'local') {
+      const origin = this.getRepresent(resolver);
+      const angle = (this as any).rotation || 0;
+      const cos = Math.cos(angle), sin = Math.sin(angle);
+      return new Point2d(
+        origin.x + cos * offset.x - sin * offset.y,
+        origin.y + sin * offset.x + cos * offset.y
+      );
+    }
+    return repPt.add(offset);
+  }
+
+  /** 按关键字解析代表点（供 ref_pt 覆盖使用） */
+  _resolveRepresentKeyword(keyword: string, resolver: IResolver | undefined): Point2d {
+    switch (keyword) {
+      case 'self':
+        if (this.point) {
+          const p = this.point;
+          return p instanceof Point2d ? p.clone() : new Point2d((p as number[])[0], (p as number[])[1]);
+        }
+        return new Point2d(0, 0);
+      case 'origin':
+        return new Point2d(0, 0);
+      case 'center':
+      case 'base':
+      default:
+        return this.getRepresent(resolver);
+    }
+  }
   
   getBox(resolver: IResolver | undefined): Box {
     const curve = this.getCurve(resolver);
@@ -245,8 +354,8 @@ export class Entity {
 export function editablePointGrip(resolver: IResolver | undefined, ref: string, propPath = ref): GripPoint | null {
   const refEnt = resolver?.get(ref);
   if (refEnt && refEnt.type === 'point') {
-    const pe = refEnt as unknown as { point?: Point2d | number[]; ref_pt?: string };
-    if (pe.point && !pe.ref_pt) {
+    const pe = refEnt as unknown as { point?: Point2d | number[]; ref_pt?: string | RefPtRef };
+    if (pe.point && !refId(pe.ref_pt)) {
       const p = pe.point;
       const pt = p instanceof Point2d ? p.clone() : new Point2d((p as number[])[0]!, (p as number[])[1]!);
       return { pt, propPath, isRef: true, editable: true };

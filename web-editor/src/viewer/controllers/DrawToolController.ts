@@ -209,8 +209,12 @@ export class DrawToolController {
       const entity = doc.getEntityById(id);
       if (!entity) continue;
       for (const [key, value] of Object.entries(entity)) {
-        if ((key.endsWith('_ref') || key === 'ref_pt') && typeof value === 'string'
+        if (key.endsWith('_ref') && typeof value === 'string'
             && /^[A-Z]+[0-9]+$/.test(value)) refedPoints.add(value);
+        else if (key === 'ref_pt') {
+          const refStr = typeof value === 'string' ? value : (value as any)?.id;
+          if (refStr && /^[A-Z]+[0-9]+$/.test(refStr)) refedPoints.add(refStr);
+        }
         if (key.endsWith('_refs') && Array.isArray(value)) {
           for (const v of value) { if (typeof v === 'string' && /^[A-Z]+[0-9]+$/.test(v)) refedPoints.add(v); }
         }
@@ -242,7 +246,11 @@ export class DrawToolController {
   /** 检查实体是否引用了指定点 ID */
   entityRefsPoint(entity: Entity, pointId: string): boolean {
     for (const [key, value] of Object.entries(entity)) {
-      if ((key.endsWith('_ref') || key === 'ref_pt') && value === pointId) return true;
+      if (key.endsWith('_ref') && value === pointId) return true;
+      if (key === 'ref_pt') {
+        const id = typeof value === 'string' ? value : (value as any)?.id;
+        if (id === pointId) return true;
+      }
       if (key.endsWith('_refs') && Array.isArray(value) && value.includes(pointId)) return true;
     }
     if (entity.segments && Array.isArray(entity.segments)) {

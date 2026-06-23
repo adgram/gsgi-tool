@@ -1088,8 +1088,12 @@ export class Viewer {
       const entity = this.doc.getEntityById(id);
       if (!entity) continue;
       for (const [key, value] of Object.entries(entity)) {
-        if ((key.endsWith('_ref') || key === 'ref_pt') && typeof value === 'string'
+        if (key.endsWith('_ref') && typeof value === 'string'
             && /^[A-Z]+[0-9]+$/.test(value)) refedPoints.add(value);
+        else if (key === 'ref_pt') {
+          const refStr = typeof value === 'string' ? value : (value as any)?.id;
+          if (refStr && /^[A-Z]+[0-9]+$/.test(refStr)) refedPoints.add(refStr);
+        }
         if (key.endsWith('_refs') && Array.isArray(value)) {
           for (const v of value) { if (typeof v === 'string' && /^[A-Z]+[0-9]+$/.test(v)) refedPoints.add(v); }
         }

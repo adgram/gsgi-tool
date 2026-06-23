@@ -5,7 +5,7 @@
  * 点实体通常用作其他几何实体的"骨架参考点"。
  */
 
-import {Entity, nextId, EntityData, IResolver, GripPoint, SnapPoint, PropertyItem} from '../entity';
+import {Entity, nextId, EntityData, IResolver, GripPoint, SnapPoint, PropertyItem, RefPtRef, refId, sanitizeRefPtOverrides} from '../entity';
 import { Point2d, Box } from '../geometry';
 import { Transform } from '../transform';
 
@@ -15,11 +15,11 @@ const RENDER_SIZE = 5;
 // ─── point ─────────────────────────────────────────
 export class PointEntity extends Entity {
   point: Point2d | null;
-  ref_pt: string | null;
+  ref_pt: string | RefPtRef | null;
   point_role: string | null;
   construction: boolean;
 
-  constructor(data: EntityData & { point?: number[] | Point2d; ref_pt?: string; point_role?: string; role?: string; construction?: boolean }) {
+  constructor(data: EntityData & { point?: number[] | Point2d; ref_pt?: string | RefPtRef; point_role?: string; role?: string; construction?: boolean }) {
     super(data);
     if (data.point) {
       this.point = data.point instanceof Point2d ? data.point : new Point2d(data.point[0], data.point[1]);
@@ -35,7 +35,9 @@ export class PointEntity extends Entity {
     const o = super.toJSON();
     if (this.point) {
       o.point = [this.point.x, this.point.y];
-      if (this.ref_pt) o.ref_pt = this.ref_pt;
+      if (this.ref_pt) {
+        o.ref_pt = typeof this.ref_pt === 'object' ? { ...this.ref_pt } : this.ref_pt;
+      }
     }
     if (this.point_role) o.point_role = this.point_role;
     if (this.construction) o.construction = true;
@@ -43,10 +45,20 @@ export class PointEntity extends Entity {
   }
 
   getResult(resolver: IResolver | undefined): Point2d {
-    if (!this.ref_pt) return this.point ?? new Point2d(0, 0);
-    const ref = resolver?.get(this.ref_pt);
+    const refPtId = refId(this.ref_pt);
+    if (!refPtId) return this.point ?? new Point2d(0, 0);
+    const ref = resolver?.get(refPtId);
     if (!ref) return this.point ?? new Point2d(0, 0);
     const offset = this.point ?? new Point2d(0, 0);
+
+    // object 形式：支持 represent / ref_op 覆盖
+    if (this.ref_pt && typeof this.ref_pt === 'object') {
+      const rp = this.ref_pt as RefPtRef;
+      const overrides = sanitizeRefPtOverrides(ref.type, rp.represent, rp.ref_op);
+      return ref.resolveRefPt(resolver, offset, overrides.represent, overrides.ref_op);
+    }
+
+    // string 形式（向后兼容）
     return ref.getRefPoint(resolver, offset);
   }
 
@@ -66,7 +78,7 @@ export class PointEntity extends Entity {
   }
 
   applyTransform(resolver: IResolver | undefined, t: Transform): void {
-    if (this.ref_pt) return;
+    if (refId(this.ref_pt)) return;
     if (!this.point) return;
     (this.point as Point2d).transform(t);
     resolver?.updateItems([this.id]);
@@ -77,7 +89,7 @@ export class PointEntity extends Entity {
     const res: string[] = [];
     for (const ptId of pts) {
       const ptEntity = resolver.entityCache.get(ptId);
-      if (ptEntity && !ptEntity.ref_pt && ptEntity.point){
+      if (ptEntity && !refId(ptEntity.ref_pt) && ptEntity.point){
           (ptEntity.point as Point2d).transform(t);
           res.push(ptId);
       }
@@ -86,7 +98,7 @@ export class PointEntity extends Entity {
   }
   
   moveTo(resolver: IResolver | undefined, newPt: Point2d): boolean {
-    if (this.ref_pt) return false;
+    if (refId(this.ref_pt)) return false;
     if (!this.point) return false;
     this.point = newPt;
     resolver?.updateItems([this.id]);
@@ -104,7 +116,10 @@ export class PointEntity extends Entity {
       props.push({ key: 'x', label: 'X', type: 'number', value: this.point.x });
       props.push({ key: 'y', label: 'Y', type: 'number', value: this.point.y });
     }
-    if (this.ref_pt) props.push({ key: 'ref_pt', label: '参照点', type: 'text', value: this.ref_pt });
+    if (this.ref_pt) {
+      const refLabel = typeof this.ref_pt === 'string' ? this.ref_pt : this.ref_pt.id;
+      props.push({ key: 'ref_pt', label: '参照点', type: 'text', value: refLabel });
+    }
     return props;
   }
 
@@ -120,7 +135,7 @@ export class PointEntity extends Entity {
   }
 
   getGripPoints(resolver: IResolver | undefined): GripPoint[] | null {
-    if (!this.point || this.ref_pt) return null;
+    if (!this.point || refId(this.ref_pt)) return null;
     return [{ pt: this.point.clone(), propPath: 'point', isRef: false }];
   }
 

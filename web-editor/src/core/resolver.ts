@@ -6,7 +6,7 @@
  * 带有缓存和依赖追踪，当上游变化时自动失效下游缓存。
  */
 
-import { Entity, EntityStatus, IResolver } from './entity';
+import { Entity, EntityStatus, IResolver, refId } from './entity';
 import { GSGIDocument } from './document';
 
 /**
@@ -57,16 +57,23 @@ export class Resolver implements IResolver {
     const scan = (key: string, value: unknown) => {
       if ((key.endsWith('_ref') || key === 'curve_ref') && typeof value === 'string' && value) {
         this._trackDep(id, value);
+      } else if (key === 'ref_pt') {
+        const refIdStr = refId(value);
+        if (refIdStr) this._trackDep(id, refIdStr);
       } else if (key.endsWith('_refs') && Array.isArray(value)) {
         for (const ref of value) {
           if (typeof ref === 'string' && ref) this._trackDep(id, ref);
         }
       } else if (key === 'segments' && Array.isArray(value)) {
         for (const seg of value) {
-          if (seg.start_ref && typeof seg.start_ref === 'string') this._trackDep(id, seg.start_ref);
-          if (seg.end_ref && typeof seg.end_ref === 'string') this._trackDep(id, seg.end_ref);
-          if (seg.mid_ref && typeof seg.mid_ref === 'string') this._trackDep(id, seg.mid_ref);
-          if (seg.center_ref && typeof seg.center_ref === 'string') this._trackDep(id, seg.center_ref);
+          if (seg.type === 'curve_ref') {
+            if (seg.ref && typeof seg.ref === 'string') this._trackDep(id, seg.ref);
+          } else {
+            if (seg.start_ref && typeof seg.start_ref === 'string') this._trackDep(id, seg.start_ref);
+            if (seg.end_ref && typeof seg.end_ref === 'string') this._trackDep(id, seg.end_ref);
+            if (seg.mid_ref && typeof seg.mid_ref === 'string') this._trackDep(id, seg.mid_ref);
+            if (seg.center_ref && typeof seg.center_ref === 'string') this._trackDep(id, seg.center_ref);
+          }
         }
       }
     };

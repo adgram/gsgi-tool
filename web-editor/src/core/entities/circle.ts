@@ -39,6 +39,8 @@ export class CircleEntity extends Entity {
   }
 
   getRepresent(resolver: IResolver | undefined): Point2d {
+    const byRule = this._resolveRepresentByRule(resolver);
+    if (byRule) return byRule;
     const c = resolver?.get(this.center_ref)?.getResult(resolver);
     return c ? new Point2d(c.x, c.y) : new Point2d(0, 0);
   }

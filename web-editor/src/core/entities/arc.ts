@@ -42,6 +42,8 @@ export class PolyarcEntity extends Entity {
   }
 
   getRepresent(resolver: IResolver | undefined): Point2d {
+    const byRule = this._resolveRepresentByRule(resolver);
+    if (byRule) return byRule;
     if (!this.point_refs || this.point_refs.length === 0) return new Point2d(0, 0);
     const r = resolver?.get(this.point_refs[0])?.getResult(resolver);
     return r ? new Point2d(r.x, r.y) : new Point2d(0, 0);
@@ -141,13 +143,17 @@ export class PolycurveEntity extends Entity {
           break;
         }
         case 'curve_ref': {
-          const entity = resolver.entityCache.get(seg.ref);
-          if (!entity) { console.warn(`[${this.id}] curve_ref: entity ${seg.ref} not found`); break; }
+          const refEntity = resolver.entityCache.get(seg.ref);
+          if (!refEntity) { console.warn(`[${this.id}] curve_ref: entity ${seg.ref} not found`); break; }
+          const curve = refEntity.getCurve?.(resolver) ?? null;
+          if (!curve) { console.warn(`[${this.id}] curve_ref ${seg.ref}: getCurve returned null`); break; }
+          const c = curve as any;
+          const range = c.type === 'points' && c.points
+            ? (c.closed ? c.points.length : c.points.length - 1)
+            : 1;
           for (let i = 0; i <= steps; i++) {
-            const t = i / steps;
-            const curve = entity.getCurve?.(resolver) ?? null;
-            if (!curve) { console.warn(`[${this.id}] curve_ref ${seg.ref}: getCurve returned null`); break; }
-            const pt = curve.eval?.(t) ?? null;
+            const t = (i / steps) * range;
+            const pt = curve.eval(t) ?? null;
             if (pt) allPts.push(pt);
           }
           if (seg.reverse) {
@@ -208,6 +214,8 @@ export class PolycurveEntity extends Entity {
   }
 
   getRepresent(resolver: IResolver | undefined): Point2d {
+    const byRule = this._resolveRepresentByRule(resolver);
+    if (byRule) return byRule;
     const pts = this.getPolycurvePoints(resolver);
     return (pts && pts.length > 0) ? pts[0] : new Point2d(0, 0);
   }
@@ -308,6 +316,8 @@ export class ArcEntity extends Entity {
   }
 
   getRepresent(resolver: IResolver | undefined): Point2d {
+    const byRule = this._resolveRepresentByRule(resolver);
+    if (byRule) return byRule;
     const r = resolver?.get(this.start_ref)?.getResult(resolver);
     return r ? new Point2d(r.x, r.y) : new Point2d(0, 0);
   }

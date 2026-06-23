@@ -111,9 +111,6 @@ export class SelectionManager {
     this._selectionRectItem = new paper.Path.Rectangle({
       from: [from.x, from.y],
       to: [toPt.x, toPt.y],
-      strokeColor: '#0078D7',
-      strokeWidth: 1,
-      dashArray: [4, 3],
       fillColor: new paper.Color(0, 0.47, 0.84, 0.08),
       insert: false
     });

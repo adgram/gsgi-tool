@@ -48,6 +48,8 @@ export class LineEntity extends Entity {
   }
 
   getRepresent(resolver: IResolver | undefined): Point2d {
+    const byRule = this._resolveRepresentByRule(resolver);
+    if (byRule) return byRule;
     const c = this.getCurve(resolver);
     return c ? c.mid() : new Point2d(0, 0);
   }
@@ -159,6 +161,8 @@ export class PolylineEntity extends Entity {
   }
 
   getRepresent(resolver: IResolver | undefined): Point2d {
+    const byRule = this._resolveRepresentByRule(resolver);
+    if (byRule) return byRule;
     if (!this.points || this.points.length === 0) return new Point2d(0, 0);
     return this.points[0].clone();
   }

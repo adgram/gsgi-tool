@@ -100,6 +100,7 @@ export class Renderer {
   _collectReferencedPoints() {
     const add = (value: any) => {
       if (typeof value === 'string') this.referencedPointIds.add(value);
+      else if (typeof value === 'object' && value && value.id) this.referencedPointIds.add(value.id);
       else if (Array.isArray(value)) value.forEach(add);
     };
 
@@ -110,9 +111,12 @@ export class Renderer {
       }
       if (entity.type === 'polycurve' && Array.isArray(entity.segments)) {
         for (const segment of entity.segments) {
-          add(segment.start_ref);
-          add(segment.end_ref);
-          add(segment.center_ref);
+          if (segment.type === 'curve_ref') add(segment.ref);
+          else {
+            add(segment.start_ref);
+            add(segment.end_ref);
+            add(segment.center_ref);
+          }
         }
       }
     };
@@ -157,14 +161,16 @@ export class Renderer {
       if (frozenIds.has(e.id)) continue;
       for (const [key, value] of Object.entries(e)) {
         if (key === 'id' || key === 'type') continue;
-        if ((key.endsWith('_ref') || key.endsWith('_refs') || key === 'ref_pt') && typeof value === 'string' && frozenIds.has(value)) {
+        const refVal = key === 'ref_pt' && typeof value === 'object' ? value?.id : value;
+        if ((key.endsWith('_ref') || key.endsWith('_refs') || key === 'ref_pt') && typeof refVal === 'string' && frozenIds.has(refVal)) {
           frozenIds.add(e.id);
           break;
         }
       }
       if (e.type === 'polycurve' && Array.isArray(e.segments)) {
         for (const seg of e.segments) {
-          for (const refKey of ['start_ref', 'end_ref', 'center_ref']) {
+          const refKeys = seg.type === 'curve_ref' ? ['ref'] : ['start_ref', 'end_ref', 'center_ref'];
+          for (const refKey of refKeys) {
             if (typeof seg[refKey] === 'string' && frozenIds.has(seg[refKey])) {
               frozenIds.add(e.id);
               break;

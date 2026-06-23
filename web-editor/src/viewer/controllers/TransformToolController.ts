@@ -227,7 +227,8 @@ export class TransformToolController {
             }
           }
         };
-        if ((key.endsWith('_ref') || key === 'ref_pt') && typeof value === 'string') { checkId(value); }
+        if (key.endsWith('_ref') && typeof value === 'string') { checkId(value); }
+        else if (key === 'ref_pt') { const id = typeof value === 'string' ? value : (value as any)?.id; if (id) checkId(id); }
         else if (key.endsWith('_refs') && Array.isArray(value)) { value.forEach(checkId); }
         else if (key === 'segments' && Array.isArray(value)) {
           for (const seg of value) {
@@ -257,7 +258,14 @@ export class TransformToolController {
       };
       for (const [key, value] of Object.entries(json)) {
         if (key === 'id') { json[key] = oldToNew.get(id); }
-        else if ((key.endsWith('_ref') || key === 'ref_pt') && typeof value === 'string') { json[key] = remap(value); }
+        else if ((key.endsWith('_ref')) && typeof value === 'string') { json[key] = remap(value); }
+        else if (key === 'ref_pt') {
+          if (typeof value === 'string') { json[key] = remap(value); }
+          else if (typeof value === 'object' && (value as Record<string, unknown>)?.id) {
+            const v = value as Record<string, unknown>;
+            json[key] = { ...v, id: remap(v.id) as string };
+          }
+        }
         else if (key.endsWith('_refs') && Array.isArray(value)) { json[key] = value.map((v: unknown) => remap(v)); }
         else if (key === 'segments' && Array.isArray(value)) {
           for (const seg of value) {
@@ -266,8 +274,9 @@ export class TransformToolController {
         }
       }
 
-      if (json.ref_pt && typeof json.ref_pt === 'string' && !oldToNew.has(json.ref_pt)) {
-        const refEnt = this.viewer.doc!.getEntityById(json.ref_pt as string);
+      const refPtId = typeof json.ref_pt === 'string' ? json.ref_pt : json.ref_pt?.id;
+      if (refPtId && !oldToNew.has(refPtId)) {
+        const refEnt = this.viewer.doc!.getEntityById(refPtId);
         if (refEnt && this.viewer.renderer?.resolver) {
           const r = (refEnt as any).getResult?.(this.viewer.renderer.resolver);
           if (r) { json.point = [r.x, r.y]; delete json.ref_pt; }

@@ -8,6 +8,7 @@ import { Viewer } from './viewer/index';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const viewer = new Viewer(canvas);
+(window as any).viewer = viewer;
 
 // ─── 拖放加载 .gsgi 文件 ─────────────────────────
 
