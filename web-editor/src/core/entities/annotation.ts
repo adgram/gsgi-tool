@@ -17,16 +17,18 @@ export class RegionAnnoEntity extends Entity {
   edges_refs: string[];
   area: number | undefined;
   area_text: string;
+  height: number;
   contained_entities: any;
   region_label: string;
   operation: any;
   fill: any;
 
-  constructor(data: EntityData & { edges_refs?: string[]; area?: number; area_text?: string; contained_entities?: any; label?: string; operation?: any; fill?: any }) {
+  constructor(data: EntityData & { edges_refs?: string[]; area?: number; area_text?: string; height?: number; contained_entities?: any; label?: string; operation?: any; fill?: any }) {
     super(data);
     this.edges_refs = data.edges_refs || [];
     this.area = data.area;
     this.area_text = data.area_text || '';
+    this.height = data.height ?? 12;
     this.contained_entities = data.contained_entities || null;
     this.region_label = data.label || '';
     this.operation = data.operation || null;
@@ -38,6 +40,7 @@ export class RegionAnnoEntity extends Entity {
     o.edges_refs = this.edges_refs;
     if (this.area !== undefined) o.area = this.area;
     if (this.area_text) o.area_text = this.area_text;
+    if (this.height !== 12) o.height = this.height;
     if (this.contained_entities) o.contained_entities = this.contained_entities;
     if (this.region_label) o.label = this.region_label;
     if (this.operation) o.operation = this.operation;

@@ -130,7 +130,7 @@ export class Renderer {
   _isConstructionPoint(entity: any) {
     if (entity.type !== 'point') return false;
     return entity.point_role === 'construction' || entity.point_role === 'helper' ||
-      entity.construction === true || (this.referencedPointIds.has(entity.id) && !entity._explicitVisible);
+      (this.referencedPointIds.has(entity.id) && !entity._explicitVisible);
   }
 
   _isHiddenConstructionPoint(entity: any) {

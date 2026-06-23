@@ -265,7 +265,7 @@ export function registerDispatchers(renderer: any): void {
         const outer = outerEe && typeof outerEe.getPolycurvePoints === 'function' ? outerEe.getPolycurvePoints(this.resolver) : [];
         if (outer.length) {
           const c = polygonCentroid(outer);
-          const t = new paper.PointText({ point: [c.x, c.y], content: entity.area_text, fontSize: 12, fillColor: '#3366FF', justification: 'center', insert: false });
+          const t = new paper.PointText({ point: [c.x, c.y], content: entity.area_text, fontSize: entity.height * (entity.scale || 1), fillColor: '#3366FF', justification: 'center', insert: false });
           parent.addChild(t); items.push(t);
         }
       }

@@ -209,8 +209,16 @@ export class Entity {
     if (repObj.method === 'bbox') {
       const box = this.getBox(resolver);
       if (box) {
-        if (repObj.which === 'min') return box.min;
-        if (repObj.which === 'max') return box.max;
+        const min = box.min, max = box.max;
+        switch (repObj.which) {
+          case 'min': return min;
+          case 'max': return max;
+          case 'center': return new Point2d((min.x + max.x) / 2, (min.y + max.y) / 2);
+          case 'top_left': return new Point2d(min.x, max.y);
+          case 'top_right': return max;
+          case 'bottom_left': return min;
+          case 'bottom_right': return new Point2d(max.x, min.y);
+        }
       }
       return new Point2d(0, 0);
     }

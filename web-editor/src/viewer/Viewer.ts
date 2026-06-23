@@ -1111,7 +1111,7 @@ export class Viewer {
       if (ids.has(ptId)) continue;
       const ptEnt = this.doc.getEntityById(ptId);
       if (!ptEnt) continue;
-      const isConstruction = ptEnt.type === 'param_pt' || (ptEnt as any).construction === true;
+      const isConstruction = ptEnt.type === 'param_pt' || (ptEnt as any).point_role === 'construction';
       if (!isConstruction) continue;
       const isUsedElsewhere = this.doc.entities.some(e =>
         !ids.has(e.id) && e.id !== ptId && this._drawToolController.entityRefsPoint(e, ptId));

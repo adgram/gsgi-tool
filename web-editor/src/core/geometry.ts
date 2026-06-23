@@ -471,7 +471,7 @@ export class PointsCurve {
     const n = this.closed ? pts.length : pts.length - 1;
     const idx = Math.max(0, Math.min(Math.floor(t), n - 1));
     const s = t - idx;
-    const i0 = Math.min(idx, pts.length - 2);
+    const i0 = this.closed ? idx % pts.length : Math.min(idx, pts.length - 2);
     const i1 = this.closed ? (i0 + 1) % pts.length : i0 + 1;
     return pts[i0].lerp(pts[i1], s);
   }
@@ -630,7 +630,7 @@ export class PolyarcCurve {
     const n = this.closed ? pts.length : pts.length - 1;
     const idx = Math.max(0, Math.min(Math.floor(t), n - 1));
     const s = t - idx;
-    const i0 = Math.min(idx, pts.length - 2);
+    const i0 = this.closed ? idx % pts.length : Math.min(idx, pts.length - 2);
     const i1 = this.closed ? (i0 + 1) % pts.length : i0 + 1;
     const p0 = pts[i0], p1 = pts[i1];
     const bulge = (bulges && bulges[i0]) || 0;

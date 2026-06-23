@@ -232,7 +232,7 @@ export class DrawToolController {
       if (idsSet.has(ptId)) continue;
       const ptEnt = doc.getEntityById(ptId);
       if (!ptEnt) continue;
-      const isConstruction = ptEnt.type === 'param_pt' || (ptEnt as any).construction === true;
+      const isConstruction = ptEnt.type === 'param_pt' || (ptEnt as any).point_role === 'construction';
       if (!isConstruction) continue;
       const isUsedElsewhere = doc.entities.some(e =>
         !idsSet.has(e.id) && e.id !== ptId && this.entityRefsPoint(e, ptId));
@@ -355,7 +355,7 @@ export class DrawToolController {
       const pid = nextId('P');
       const pt = this.createEntity({
         type: 'point', id: pid, point: [0, 0], ref_pt: ppid,
-        point_role: 'construction', construction: true,
+        point_role: 'construction',
         description: description || `曲线参数点 ${snapResult.lineId}@${(snapResult.t as number).toFixed(3)}`
       });
       this.viewer.doc!.entities.push(pt!);
@@ -364,7 +364,7 @@ export class DrawToolController {
     const pid = nextId('P');
     const pt = this.createEntity({
       type: 'point', id: pid, point: [fallbackPt.x, fallbackPt.y],
-      construction: true, visible: true,
+      point_role: 'construction', visible: true,
       description: description || `构造点 ${fallbackPt.x.toFixed(1)},${fallbackPt.y.toFixed(1)}`
     });
     this.viewer.doc!.entities.push(pt!);

@@ -17,9 +17,8 @@ export class PointEntity extends Entity {
   point: Point2d | null;
   ref_pt: string | RefPtRef | null;
   point_role: string | null;
-  construction: boolean;
 
-  constructor(data: EntityData & { point?: number[] | Point2d; ref_pt?: string | RefPtRef; point_role?: string; role?: string; construction?: boolean }) {
+  constructor(data: EntityData & { point?: number[] | Point2d; ref_pt?: string | RefPtRef; point_role?: string; role?: string }) {
     super(data);
     if (data.point) {
       this.point = data.point instanceof Point2d ? data.point : new Point2d(data.point[0], data.point[1]);
@@ -28,7 +27,6 @@ export class PointEntity extends Entity {
     }
     this.ref_pt = data.ref_pt || null;
     this.point_role = data.point_role || data.role || null;
-    this.construction = data.construction === true;
   }
 
   toJSON(): Record<string, any> {
@@ -40,7 +38,6 @@ export class PointEntity extends Entity {
       }
     }
     if (this.point_role) o.point_role = this.point_role;
-    if (this.construction) o.construction = true;
     return o;
   }
 
