@@ -34,6 +34,20 @@ For GSGI format definition, JSON Schema and DXF mapping rules, see the upstream 
 - 仓库 / Repository：https://github.com/adgram/GSGI
 - Schema：https://raw.githubusercontent.com/adgram/GSGI/main/gsgi-1.0.schema.json
 
+## 案例 / Examples
+
+### 1 平面几何  /  Geometry
+
+![平面几何](examples\苏州数学-25.png)
+
+### 2 规范图集 / Design
+
+![规范图集](examples\日照影响分析.png)
+
+### 3 实体清单 / all entities
+
+![规范图集](web-editor\default_demo\all_entities_demo.png)
+
 ## 许可 / License
 
 本项目基于 [MIT 许可证](./LICENSE)。

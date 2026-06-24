@@ -1,12 +1,13 @@
 {
   "gsgi": "1.0",
+  "tags": [],
   "summary": "L型支架俯视图",
   "author": "",
   "created": "",
   "modified": "",
   "properties": {
     "unit": "mm",
-    "scale": 1,
+    "scale": 50,
     "coord_precision": 2,
     "currentLayer": "0"
   },
@@ -43,30 +44,6 @@
   "blocks": [],
   "entities": [
     {
-      "id": "PT_A",
-      "type": "point",
-      "point": [
-        0,
-        0
-      ]
-    },
-    {
-      "id": "PT_B",
-      "type": "point",
-      "point": [
-        0,
-        600
-      ]
-    },
-    {
-      "id": "PT_C",
-      "type": "point",
-      "point": [
-        200,
-        600
-      ]
-    },
-    {
       "id": "PT_D",
       "type": "point",
       "point": [
@@ -83,27 +60,12 @@
       ]
     },
     {
-      "id": "PT_F",
-      "type": "point",
-      "point": [
-        200,
-        400
-      ]
-    },
-    {
-      "id": "PT_G",
-      "type": "point",
-      "point": [
-        200,
-        0
-      ]
-    },
-    {
       "id": "L_outline",
       "type": "polyline",
       "layer": "轮廓",
       "color": 7,
       "description": "L型支架外轮廓",
+      "points": [],
       "closed": true
     },
     {
@@ -262,7 +224,7 @@
       "type": "point",
       "point": [
         100,
-        -120
+        -150
       ]
     },
     {
@@ -270,7 +232,7 @@
       "type": "point",
       "point": [
         600,
-        -120
+        -150
       ]
     },
     {
@@ -278,6 +240,7 @@
       "type": "dimension",
       "layer": "标注",
       "color": 3,
+      "scale": 5,
       "description": "总宽500",
       "p1_ref": "DM_P1",
       "p2_ref": "DM_P2",
@@ -305,86 +268,12 @@
       "type": "dimension",
       "layer": "标注",
       "color": 3,
+      "scale": 5,
       "description": "总高600",
       "p1_ref": "DM_P3",
       "p2_ref": "DM_P4",
       "measurement": 600,
       "category": "vertical"
-    },
-    {
-      "id": "P1781612799150",
-      "type": "point",
-      "description": "起点 -300.0,100.0",
-      "point": [
-        -300,
-        100
-      ]
-    },
-    {
-      "id": "P1781612799151",
-      "type": "point",
-      "description": "终点 -100.0,0.0",
-      "point": [
-        -100,
-        0
-      ]
-    },
-    {
-      "id": "L1781612799149",
-      "type": "line",
-      "description": "直线",
-      "start_ref": "P1781612799150",
-      "end_ref": "P1781612799151"
-    },
-    {
-      "id": "P1781613020533",
-      "type": "point",
-      "description": "起点 -500.0,0.0",
-      "point": [
-        -500,
-        0
-      ]
-    },
-    {
-      "id": "P1781613020534",
-      "type": "point",
-      "description": "终点 -300.0,300.0",
-      "point": [
-        -300,
-        300
-      ]
-    },
-    {
-      "id": "L1781613020532",
-      "type": "line",
-      "description": "直线",
-      "start_ref": "P1781613020533",
-      "end_ref": "P1781613020534"
-    },
-    {
-      "id": "P1781613024519",
-      "type": "point",
-      "description": "起点 -600.0,200.0",
-      "point": [
-        -600,
-        200
-      ]
-    },
-    {
-      "id": "P1781613024520",
-      "type": "point",
-      "description": "终点 -400.0,0.0",
-      "point": [
-        -400,
-        0
-      ]
-    },
-    {
-      "id": "L1781613024518",
-      "type": "line",
-      "description": "直线",
-      "start_ref": "P1781613024519",
-      "end_ref": "P1781613024520"
     }
   ],
   "groups": [],

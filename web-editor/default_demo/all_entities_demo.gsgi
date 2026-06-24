@@ -39,7 +39,7 @@
         150,
         0
       ],
-      "construction": true
+      "point_role": "construction"
     },
     {
       "id": "P3a",

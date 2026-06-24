@@ -1,0 +1,342 @@
+{
+  "gsgi": "1.0",
+  "tags": [
+    "几何",
+    "圆",
+    "切线",
+    "证明题"
+  ],
+  "summary": "苏州数学第25题：圆的切线证明与计算问题，包含圆O、切线PA、平行线BC//OP等几何关系",
+  "author": "AI转换",
+  "created": "2026-06-23T10:00:00Z",
+  "modified": "2026-06-23T10:00:00Z",
+  "properties": {
+    "unit": "m",
+    "scale": 1,
+    "currentLayer": "0"
+  },
+  "layers": [
+    {
+      "id": "0",
+      "color": 7,
+      "visible": true,
+      "frozen": false,
+      "locked": false,
+      "linetype": "Continuous",
+      "printable": true
+    },
+    {
+      "id": "geometry",
+      "color": 7,
+      "description": "几何图形层"
+    },
+    {
+      "id": "labels",
+      "color": 1,
+      "description": "标签文字层"
+    }
+  ],
+  "text_styles": [],
+  "linetypes": [],
+  "blocks": [],
+  "entities": [
+    {
+      "id": "PO",
+      "type": "point",
+      "visible": true,
+      "description": "圆心O",
+      "point": [
+        0.5,
+        0.5
+      ],
+      "point_role": "construction"
+    },
+    {
+      "id": "C1",
+      "type": "circle",
+      "layer": "geometry",
+      "description": "圆O，以AB为直径，半径r=2",
+      "center_ref": "PO",
+      "r": 2
+    },
+    {
+      "id": "PA",
+      "type": "point",
+      "visible": true,
+      "description": "点A（圆上点，PA为切线）",
+      "point": [
+        0,
+        0
+      ],
+      "ref_pt": {
+        "id": "C1",
+        "represent": {
+          "method": "param",
+          "t": 0.2
+        },
+        "ref_op": "link"
+      },
+      "point_role": "construction"
+    },
+    {
+      "id": "PB",
+      "type": "point",
+      "visible": true,
+      "description": "点B（圆上点，AB为直径）",
+      "point": [
+        0,
+        0
+      ],
+      "ref_pt": {
+        "id": "C1",
+        "represent": {
+          "method": "param",
+          "t": 0.7
+        },
+        "ref_op": "link"
+      },
+      "point_role": "construction"
+    },
+    {
+      "id": "PC",
+      "type": "point",
+      "visible": true,
+      "description": "点C（圆上点，BC//OP）",
+      "point": [
+        0,
+        0
+      ],
+      "ref_pt": {
+        "id": "C1",
+        "represent": {
+          "method": "param",
+          "t": 0.85
+        },
+        "ref_op": "link"
+      },
+      "point_role": "construction"
+    },
+    {
+      "id": "PP",
+      "type": "point",
+      "visible": true,
+      "description": "圆外点P，PA=4，PA为切线",
+      "point": [
+        5.4,
+        1.2
+      ],
+      "point_role": "construction"
+    },
+    {
+      "id": "LOB",
+      "type": "line",
+      "layer": "geometry",
+      "description": "半径OB，由圆心O指向圆上点B",
+      "start_ref": "PO",
+      "end_ref": "PB"
+    },
+    {
+      "id": "LOA",
+      "type": "line",
+      "layer": "geometry",
+      "description": "半径OA，由圆心O指向圆上点A（切点）",
+      "start_ref": "PO",
+      "end_ref": "PA"
+    },
+    {
+      "id": "LBC",
+      "type": "line",
+      "layer": "geometry",
+      "description": "线段BC，平行于OP",
+      "start_ref": "PB",
+      "end_ref": "PC"
+    },
+    {
+      "id": "LAP",
+      "type": "line",
+      "layer": "geometry",
+      "description": "切线PA，由圆外点P指向圆上点A（切点），PA⊥OA",
+      "start_ref": "PP",
+      "end_ref": "PA"
+    },
+    {
+      "id": "LOP",
+      "type": "line",
+      "layer": "geometry",
+      "description": "线段OP，连接圆心O与圆外点P",
+      "start_ref": "PO",
+      "end_ref": "PP"
+    },
+    {
+      "id": "LCP",
+      "type": "line",
+      "layer": "geometry",
+      "description": "线段PC，连接圆外点P与圆上点C（待证明PC为切线）",
+      "start_ref": "PC",
+      "end_ref": "PP"
+    },
+    {
+      "id": "LOC",
+      "type": "line",
+      "layer": "geometry",
+      "description": "线段OC，连接圆心O与圆上点C",
+      "start_ref": "PO",
+      "end_ref": "PC"
+    },
+    {
+      "id": "PD",
+      "type": "point",
+      "visible": true,
+      "description": "点D（OB的中点）",
+      "point": [
+        0,
+        0
+      ],
+      "ref_pt": {
+        "id": "LOB",
+        "represent": {
+          "method": "param",
+          "t": 0.5
+        },
+        "ref_op": "link"
+      },
+      "point_role": "construction"
+    },
+    {
+      "id": "LDP",
+      "type": "line",
+      "layer": "geometry",
+      "description": "线段DP，过OB中点D，交OC于E",
+      "start_ref": "PD",
+      "end_ref": "PP"
+    },
+    {
+      "id": "PE",
+      "type": "point",
+      "visible": true,
+      "description": "点E（DP与OC的内联交点）",
+      "point": [
+        0,
+        0
+      ],
+      "ref_pt": {
+        "id": "LDP",
+        "represent": {
+          "method": "intersect",
+          "curve_ref": "LOC"
+        },
+        "ref_op": "link"
+      }
+    },
+    {
+      "id": "label_O",
+      "type": "text",
+      "layer": "labels",
+      "position_ref": "PO",
+      "text": "O",
+      "height": 0.3
+    },
+    {
+      "id": "label_A",
+      "type": "text",
+      "layer": "labels",
+      "position_ref": "PA",
+      "text": "A",
+      "height": 0.3
+    },
+    {
+      "id": "label_B",
+      "type": "text",
+      "layer": "labels",
+      "position_ref": "PB",
+      "text": "B",
+      "height": 0.3
+    },
+    {
+      "id": "label_C",
+      "type": "text",
+      "layer": "labels",
+      "position_ref": "PC",
+      "text": "C",
+      "height": 0.3
+    },
+    {
+      "id": "label_P",
+      "type": "text",
+      "layer": "labels",
+      "position_ref": "PP",
+      "text": "P",
+      "height": 0.3
+    },
+    {
+      "id": "label_D",
+      "type": "text",
+      "layer": "labels",
+      "position_ref": "PD",
+      "text": "D",
+      "height": 0.3
+    },
+    {
+      "id": "label_E",
+      "type": "text",
+      "layer": "labels",
+      "position_ref": "PE",
+      "text": "E",
+      "height": 0.3
+    }
+  ],
+  "groups": [
+    {
+      "id": "triangle_OAP",
+      "name": "三角形OAP",
+      "members": []
+    },
+    {
+      "id": "quadrilateral_OBCP",
+      "name": "四边形OBCP",
+      "members": []
+    }
+  ],
+  "descriptions": [
+    {
+      "type": "description",
+      "target": "C1",
+      "text": "以AB为直径的圆O，半径r=2"
+    },
+    {
+      "type": "description",
+      "target": "LAP",
+      "text": "PA是圆O的切线，PA=4，OA⊥PA"
+    },
+    {
+      "type": "description",
+      "target": "LBC",
+      "text": "BC平行于OP"
+    },
+    {
+      "type": "description",
+      "target": "PP",
+      "text": "圆外点P，PA=4"
+    },
+    {
+      "type": "description",
+      "target": "PD",
+      "text": "D是OB的中点（LOB at t=0.5）"
+    },
+    {
+      "type": "description",
+      "target": "LDP",
+      "text": "DP与OC的交点为E"
+    },
+    {
+      "type": "description",
+      "target": "LCP",
+      "text": "PC需要证明是圆O的切线（第1问）"
+    },
+    {
+      "type": "description",
+      "target": "triangle_OAP",
+      "text": "直角三角形OAP，已知OA=2，PA=4，可求OP长度"
+    }
+  ]
+}
