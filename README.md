@@ -38,15 +38,15 @@ For GSGI format definition, JSON Schema and DXF mapping rules, see the upstream 
 
 ### 1 平面几何  /  Geometry
 
-![平面几何](examples\苏州数学-25.png)
+![平面几何](examples/苏州数学-25.png)
 
 ### 2 规范图集 / Design
 
-![规范图集](examples\日照影响分析.png)
+![规范图集](examples/日照影响分析.png)
 
 ### 3 实体清单 / all entities
 
-![规范图集](web-editor\default_demo\all_entities_demo.png)
+![规范图集](web-editor/default_demo/all_entities_demo.png)
 
 ## 许可 / License
 
